@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault'
 import FormField from '../../../components/FormField';
 import Button from '../../../components/Button';
+import useForm from '../../../hooks/useForm'
 
 
 const CadastroCategoria= () => {
@@ -12,23 +13,11 @@ const CadastroCategoria= () => {
     color: '',
   }
 
+  const { handleChange, values, clearForm } = useForm(initialValues)
+
   const [categories, setCategories] = useState([]);
-  const [values, setValues] = useState(initialValues);
-
-
-  function setValue(key, value) {
-    setValues({
-      ...values, 
-      [key]: value,
-    });
-  }
-
-  function handleChange(e) {
-    setValue(e.target.getAttribute('name'), e.target.value)
-  }
 
   useEffect(() => {
-    console.log('Aloooo')
     const URL_TOP = window.location.hostname.includes('localhost')
     ? 'http://localhost:8080/categorias'
     : 'https://garciaflix.herokuapp.com/categorias';
@@ -41,24 +30,6 @@ const CadastroCategoria= () => {
         ]);
       });
 
-    // setTimeout(() => {
-    //   setCategories([
-    //     ...categories,
-    //     {
-    //       "id": 1,
-    //       "name": "Font End",
-    //       "descrição": "Uma categoria boa",
-    //       "cor": "#cbd1ff"
-    //     },
-    //     {
-    //       "id": 2,
-    //       "name": "Back End",
-    //       "descrição": "Outra categoria boa",
-    //       "cor": "#cbd1ff"
-    //     }
-
-    //   ])
-    // }, 4*1000);
   }, []);
 
   return (
@@ -69,7 +40,7 @@ const CadastroCategoria= () => {
         e.preventDefault();
 
         setCategories([ ...categories, values ]);
-        setValues(initialValues)
+        clearForm();
       }}>
 
       <FormField
@@ -84,7 +55,7 @@ const CadastroCategoria= () => {
         label="Descrição" 
         type="textarea"
         name="description"
-        value={values.cor}
+        value={values.description}
         onChange={handleChange}
       />
 
@@ -111,8 +82,8 @@ const CadastroCategoria= () => {
       <ul>
         {categories.map((category) => {
           return (
-            <li key={`${category.name}`}>
-              {category.name}
+            <li key={`${category.id}`}>
+              {category.titulo}
             </li>
           )
         })
