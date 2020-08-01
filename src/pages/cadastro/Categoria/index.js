@@ -29,7 +29,9 @@ const CadastroCategoria= () => {
 
   useEffect(() => {
     console.log('Aloooo')
-    const URL_TOP = 'http://localhost:8000/categorias';
+    const URL_TOP = window.location.hostname.includes('localhost')
+    ? 'http://localhost:8000'
+    : 'https://garciaflix.herokuapp.com/categorias';
     
     fetch(URL_TOP)
       .then(async (data)=> {
@@ -100,9 +102,11 @@ const CadastroCategoria= () => {
 
       </form>
 
-      <div>
-        Loading...
-      </div>
+      {categories.length === 0 && (
+        <div>
+          Loading...
+        </div>
+      )}
 
       <ul>
         {categories.map((category) => {
