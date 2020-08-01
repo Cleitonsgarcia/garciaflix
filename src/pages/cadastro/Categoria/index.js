@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import PageDefault from '../../../components/PageDefault'
 import FormField from '../../../components/FormField';
+import Button from '../../../components/Button';
+
 
 const CadastroCategoria= () => {
   const initialValues = {
@@ -24,6 +26,38 @@ const CadastroCategoria= () => {
   function handleChange(e) {
     setValue(e.target.getAttribute('name'), e.target.value)
   }
+
+  useEffect(() => {
+    console.log('Aloooo')
+    const URL_TOP = 'http://localhost:8000/categorias';
+    
+    fetch(URL_TOP)
+      .then(async (data)=> {
+        const resp = await data.json();
+        setCategories([
+          ...resp,
+        ]);
+      });
+
+    // setTimeout(() => {
+    //   setCategories([
+    //     ...categories,
+    //     {
+    //       "id": 1,
+    //       "name": "Font End",
+    //       "descrição": "Uma categoria boa",
+    //       "cor": "#cbd1ff"
+    //     },
+    //     {
+    //       "id": 2,
+    //       "name": "Back End",
+    //       "descrição": "Outra categoria boa",
+    //       "cor": "#cbd1ff"
+    //     }
+
+    //   ])
+    // }, 4*1000);
+  }, []);
 
   return (
     <PageDefault>
@@ -60,16 +94,20 @@ const CadastroCategoria= () => {
         onChange={handleChange}
       />
 
-      <button>
+      <Button>
         Cadastrar
-      </button>
+      </Button>
 
       </form>
 
+      <div>
+        Loading...
+      </div>
+
       <ul>
-        {categories.map((category, i) => {
+        {categories.map((category) => {
           return (
-            <li key={`${category}${i}`}>
+            <li key={`${category.name}`}>
               {category.name}
             </li>
           )
