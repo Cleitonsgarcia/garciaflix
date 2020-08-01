@@ -30,7 +30,7 @@ const CadastroCategoria= () => {
   useEffect(() => {
     console.log('Aloooo')
     const URL_TOP = window.location.hostname.includes('localhost')
-    ? 'http://localhost:8000'
+    ? 'http://localhost:8000/categorias'
     : 'https://garciaflix.herokuapp.com/categorias';
     
     fetch(URL_TOP)
